@@ -1,0 +1,5 @@
+down swing
+side swing
+thrust
+sheild block
+jump
