@@ -9,8 +9,10 @@ export class Player
 
         const standImages = ['assets/stick_stand1.png', 'assets/stick_stand2.png'];
         const walkImages = ['assets/stick_walk1.png', 'assets/stick_walk2.png'];
+        const blockingImages = ['assets/stick_block1.png', 'assets/stick_block2.png'];
         this.standingTextures = [];
         this.walkingTextures = [];
+        this.blockingTextures = [];
         this.isMoving = false;
         
         for (let i = 0; i < 2; i++)
@@ -26,6 +28,12 @@ export class Player
         {
             const texture = Texture.from(walkImages[i]);
             this.walkingTextures.push(texture);
+        }
+
+        for (let i = 0; i < 2; i++)
+        {
+                const texture = Texture.from(blockingImages[i]);
+                this.blockingTextures.push(texture);
         } 
         
         // add it to the container and configure!
@@ -50,6 +58,15 @@ export class Player
         this.isMoving = false;
         this.animation.stop();
         this.animation.textures = this.standingTextures;
+        this.animation.gotoAndStop(0)
+        this.animation.play();
+    }
+
+    block() {
+        console.log('blocking!');
+        this.blocking = false;
+        this.animation.stop();
+        this.animation.textures = this.blockingTextures;
         this.animation.gotoAndStop(0)
         this.animation.play();
     }
