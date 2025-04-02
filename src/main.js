@@ -1,4 +1,4 @@
-import { Application, Assets, Graphics } from "pixi.js";
+import { Application, Assets, Graphics, Text } from "pixi.js";
 import { Button } from '@pixi/ui';
 import { Player } from './player';
 
@@ -20,18 +20,35 @@ import { Player } from './player';
 
   const player = new Player();
 
+  // Create the text for the button
+  //const buttonText = new Text('Click Me', { fontFamily: 'Arial', fontSize: 20, fill: 0xFFFFFF });
+  ///buttonText.x = 150 / 2 - buttonText.width / 2;    // Center the text horizontally
+  //buttonText.y = 50 / 2 - buttonText.height / 2;    // Center the text vertically
+
+  // Create the button background using Graphics
+  const buttonBackground = new Graphics()
+    .rect(0, 0, 100, 50)
+    .fill(0xFFFFFF)
+
+  // or....
+  const button_style = {
+    fontFamily: 'Arial',
+    fontSize: 20,
+    fill: 0xFFFFFF,
+  };
+
   // TODO: extract to 'factory' type function
   const button_walk = new Button(
-    new Graphics()
-        .rect(0, 0, 100, 50)
-        .fill(0xFFFFFF)
+    buttonBackground
   );
 
-  const button_block = new Button(
-    new Graphics()
-        .rect(0, 100, 100, 50)
-        .fill(0xFFFFFF)
-  );
+  // const walk_text = new Text('Click Me', { fontFamily: 'Arial', fontSize: 20, fill: 0xFFFFFF });
+  const walk_text = new Text({ text: 'Click Me', button_style });
+
+  walk_text.x = (buttonBackground.width - walk_text.width) / 2; // Center the text horizontally
+  walk_text.y = (buttonBackground.height - walk_text.height) / 2; // Center the text vertically
+
+  const button_block = new Button({});
 
   // add it to the stage and render!
   app.stage.addChild(button_walk.view);
