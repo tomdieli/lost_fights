@@ -1,5 +1,4 @@
-import { Application, Assets, Graphics, Text } from "pixi.js";
-import { Button } from '@pixi/ui';
+import { Application, Assets, Graphics, Text, Container } from "pixi.js";
 import { Player } from './player';
 
 (async () => {
@@ -20,51 +19,75 @@ import { Player } from './player';
 
   const player = new Player();
 
-  // Create the text for the button
-  //const buttonText = new Text('Click Me', { fontFamily: 'Arial', fontSize: 20, fill: 0xFFFFFF });
-  ///buttonText.x = 150 / 2 - buttonText.width / 2;    // Center the text horizontally
-  //buttonText.y = 50 / 2 - buttonText.height / 2;    // Center the text vertically
+  // Function to create a button
+  function createButton(text, style, width, height, onPointerDown, onPointerUp) {
+    const buttonContainer = new Container();
+    buttonContainer.interactive = true; // Make the container interactive
+    buttonContainer.buttonMode = true; // Enable pointer cursor on hover
 
-  // Create the button background using Graphics
-  const buttonBackground = new Graphics()
-    .rect(0, 0, 100, 50)
-    .fill(0xFFFFFF)
+    // Create the button background
+    const buttonBackground = new Graphics();
 
-  // or....
-  const button_style = {
-    fontFamily: 'Arial',
+    // Create the button text
+    const buttonText = new Text(text, style);
+    buttonText.x = (width - buttonText.width) / 2;
+    buttonText.y = (height - buttonText.height) / 2;
+
+    // Add background and text to the container
+    buttonContainer.addChild(buttonBackground);
+    buttonContainer.addChild(buttonText);
+
+    // Add event listeners
+    buttonContainer.on("pointerdown", onPointerDown);
+    buttonContainer.on("pointerup", onPointerUp);
+
+    return buttonContainer;
+  }
+
+  // Define the button text style
+  const buttonStyle = {
+    fontFamily: "Arial",
     fontSize: 20,
-    fill: 0xFFFFFF,
+    fill: 0x000000, // Black text color
   };
 
-  // TODO: extract to 'factory' type function
-  const button_walk = new Button(
-    buttonBackground
+  // Create the walk button
+  const walkButton = createButton(
+    "Advance",
+    buttonStyle,
+    100,
+    50,
+    () => player.walk(), // Pointer down action
+    () => player.stand() // Pointer up action
   );
 
-  // const walk_text = new Text('Click Me', { fontFamily: 'Arial', fontSize: 20, fill: 0xFFFFFF });
-  const walk_text = new Text({ text: 'Click Me', button_style });
+  // Create the block button
+  const blockButton = createButton(
+    "Block",
+    buttonStyle,
+    100,
+    50,
+    () => player.block(), // Pointer down action
+    () => player.stand() // Pointer up action
+  );
 
-  walk_text.x = (buttonBackground.width - walk_text.width) / 2; // Center the text horizontally
-  walk_text.y = (buttonBackground.height - walk_text.height) / 2; // Center the text vertically
+  // Position the buttons
+  walkButton.x = 50;
+  walkButton.y = 50;
 
-  const button_block = new Button({});
+  blockButton.x = 50;
+  blockButton.y = 120;
 
-  // add it to the stage and render!
-  app.stage.addChild(button_walk.view);
-  app.stage.addChild(button_block.view);
+  // Add buttons to the stage
+  app.stage.addChild(walkButton);
+  app.stage.addChild(blockButton);
   app.stage.addChild(player.view);
 
-  button_walk.view.on('pointerdown', () => player.walk())
-  button_walk.view.on('pointerup', () => player.stand())
-
-  button_block.view.on('pointerdown', () => player.block())
-  button_block.view.on('pointerup', () => player.stand())
-
+  // Game loop
   app.ticker.add(() => {
     if (player.isMoving) {
-        // Update the sprite's position
-        player.animation.x += 1;
+      // Update the sprite's position
+      player.animation.x += 1;
     }
   });
 
