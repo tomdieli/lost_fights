@@ -1,4 +1,4 @@
-import { Container, Texture, AnimatedSprite } from 'pixi.js';
+import { Container, Texture, AnimatedSprite, Graphics } from 'pixi.js';
 
 export class Player
 {
@@ -7,9 +7,15 @@ export class Player
         // Create the main view.
         this.view = new Container();
 
-        const standImages = ['assets/stick_stand1.png', 'assets/stick_stand2.png'];
-        const walkImages = ['assets/stick_walk1.png', 'assets/stick_walk2.png'];
-        const blockingImages = ['assets/stick_block1.png', 'assets/stick_block2.png'];
+        // Add debug visualization
+        const debugRect = new Graphics();
+        debugRect.fill({ color: 0xff0000, alpha: 0.3 })
+            .rect(0, 0, 64, 64);
+        this.view.addChild(debugRect);
+
+        const standImages = ['/assets/stick_stand1.png', '/assets/stick_stand2.png'];
+        const walkImages = ['/assets/stick_walk1.png', '/assets/stick_walk2.png'];
+        const blockingImages = ['/assets/stick_block1.png', '/assets/stick_block2.png'];
         this.standingTextures = [];
         this.walkingTextures = [];
         this.blockingTextures = [];
@@ -39,9 +45,11 @@ export class Player
         // add it to the container and configure!
         this.view.addChild(this.animation);
         this.animation.animationSpeed = .05;
-        this.animation.x = 400;
-        this.animation.y = 400;
+        this.animation.x = 0;
+        this.animation.y = 0;
         this.animation.eventMode = 'static';
+
+        console.log("Player created with debug visualization");
     }
 
     walk() {
