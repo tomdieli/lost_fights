@@ -26,22 +26,39 @@ export class MyRoom extends Room {
     console.log("Room created");
     this.state = new State();
 
+    // Add debug to verify handler is registered
+    console.log("Registering move handler");
+    
     this.onMessage("move", (client, data) => {
+      console.log("Move handler triggered:", {
+        handlerExists: true,
+        clientId: client.sessionId,
+        data
+      });
+      
       const player = this.state.players.get(client.sessionId);
       if (player) {
-        // Direct property assignment instead of Object.assign
-        player.x = data.x;
-        player.y = data.y;
-        player.action = data.action;
-        
-        console.log("Player moved:", {
-          id: client.sessionId,
+        console.log("Found player, before update:", {
           x: player.x,
           y: player.y,
           action: player.action
         });
+        
+        player.x = data.x;
+        player.y = data.y;
+        player.action = data.action;
+        
+        console.log("After update:", {
+          x: player.x,
+          y: player.y,
+          action: player.action
+        });
+      } else {
+        console.log("Player not found for id:", client.sessionId);
       }
     });
+
+    console.log("Move handler registered");
   }
 
   onJoin(client) {

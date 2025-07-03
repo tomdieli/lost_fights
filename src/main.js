@@ -98,6 +98,14 @@ let playerSprites = {}; // Move this here
         if (!playerSprites[key]) {
           createPlayerSprite(player, key);
         }
+        const sprite = playerSprites[key];
+        sprite.view.x = player.x;
+        sprite.view.y = player.y;
+
+        if (sprite.currentAction !== player.action) {
+          sprite.setAction(player.action); // You need to implement setAction in your Player class
+          sprite.currentAction = player.action;
+        }
       });
     }
   });
@@ -118,17 +126,17 @@ let playerSprites = {}; // Move this here
   }
 
   // Helper function to update existing player sprite
-  function updatePlayerSprite(player, key) {
-    const existingPlayer = playerSprites[key];
-    if (existingPlayer) {
-      if (player.action === "walk") existingPlayer.walk();
-      else if (player.action === "block") existingPlayer.block();
-      else existingPlayer.stand();
+  // function updatePlayerSprite(player, key) {
+  //   const existingPlayer = playerSprites[key];
+  //   if (existingPlayer) {
+  //     if (player.action === "walk") existingPlayer.walk();
+  //     else if (player.action === "block") existingPlayer.block();
+  //     else existingPlayer.stand();
       
-      existingPlayer.view.x = player.x;
-      existingPlayer.view.y = player.y;
-    }
-  }
+  //     existingPlayer.view.x = player.x;
+  //     existingPlayer.view.y = player.y;
+  //   }
+  // }
 
   // Add debug logs for connection events
   room.onJoin(() => {
@@ -148,7 +156,7 @@ let playerSprites = {}; // Move this here
   walkButton.on("pointerdown", () => {
     const myPlayer = playerSprites[mySessionId];
     if (myPlayer) {
-      myPlayer.walk();
+      //myPlayer.walk();
       room.send("move", { action: "walk", x: myPlayer.view.x, y: myPlayer.view.y });
       console.log("Sent move:", { action: "walk", x: myPlayer.view.x, y: myPlayer.view.y });
     }
@@ -156,7 +164,7 @@ let playerSprites = {}; // Move this here
   walkButton.on("pointerup", () => {
     const myPlayer = playerSprites[mySessionId];
     if (myPlayer) {
-      myPlayer.stand();
+      //myPlayer.stand();
       room.send("move", { action: "stand", x: myPlayer.view.x, y: myPlayer.view.y });
     }
   });

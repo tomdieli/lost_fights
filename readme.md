@@ -9,21 +9,6 @@ Lost Fights is a multiplayer browser-based fighting game that uses:
 - PixiJS for 2D graphics rendering
 - Node.js for the game server
 
-## Project Structure
-
-```
-lost_fights/
-├── src/                    # Client-side code
-│   ├── main.js            # Game initialization and main loop
-│   ├── player.js          # Player sprite and animation handling
-│   └── controls.js        # UI controls and input handling
-├── server/                # Server-side code
-│   ├── index.js           # Server entry point
-│   └── myRoom.js          # Colyseus room implementation
-└── assets/               # Game assets
-    └── stick_*.png        # Player sprite animations
-```
-
 ## Features
 
 - Real-time multiplayer synchronization

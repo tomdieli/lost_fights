@@ -52,6 +52,18 @@ export class Player
         console.log("Player created with debug visualization");
     }
 
+    setAction(action) {
+        if (action === "walk") {
+            this.walk();
+        } else if (action === "stand") {
+            // start stand animation
+            this.stand();
+        } else if (action === "block") {
+            // start block animation
+            this.block();
+        }
+    }
+
     walk() {
         console.log('walking!');
         this.isMoving = true;
